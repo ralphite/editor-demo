@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import './Editor.css';
@@ -7,7 +5,9 @@ import './Editor.css';
 class CollabEditor extends Component {
     constructor(props) {
         super(props);
-        this.state = { editorState: EditorState.createEmpty() };
+        this.state = {
+            editorState: EditorState.createEmpty()
+        };
 
         this.focus = () => this.refs.editor.focus();
         this.onChange = editorState => this.setState({ editorState });
@@ -60,8 +60,8 @@ class CollabEditor extends Component {
         }
 
         return (
-            <div>
-                <div className="RichEditor-root">
+            <div className="RichEditor-root">
+                <div>
                     <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} />
                     <InlineStyleControls editorState={editorState} onToggle={this.toggleInlineStyle} />
                     <div className={className} onClick={this.focus}>
@@ -72,14 +72,17 @@ class CollabEditor extends Component {
                             handleKeyCommand={this.handleKeyCommand}
                             onChange={this.onChange}
                             onTab={this.onTab}
-                            placeholder="Tell a story..."
                             ref="editor"
                             spellCheck={true}
                         />
                     </div>
                 </div>
 
-                <button style={{ cursor: 'pointer' }}>Insert Filter</button>
+                <div>                
+                    <button className="RichEditor-filter" style={{ cursor: 'pointer' }}>
+                        <span className="fa fa-filter"/> Insert Filter
+                    </button>
+                </div>
             </div>
         );
     }
@@ -131,12 +134,7 @@ const BLOCK_TYPES = [
     { label: 'H1', style: 'header-one' },
     { label: 'H2', style: 'header-two' },
     { label: 'H3', style: 'header-three' },
-    { label: 'H4', style: 'header-four' },
-    { label: 'H5', style: 'header-five' },
-    { label: 'H6', style: 'header-six' },
     { label: 'Blockquote', style: 'blockquote' },
-    { label: 'UL', style: 'unordered-list-item' },
-    { label: 'OL', style: 'ordered-list-item' },
     { label: 'Code Block', style: 'code-block' }
 ];
 
@@ -149,7 +147,7 @@ const BlockStyleControls = props => {
         .getType();
 
     return (
-        <div className="RichEditor-controls">
+        <span className="RichEditor-controls">
             {BLOCK_TYPES.map(type => (
                 <StyleButton
                     key={type.label}
@@ -159,7 +157,7 @@ const BlockStyleControls = props => {
                     style={type.style}
                 />
             ))}
-        </div>
+        </span>
     );
 };
 
@@ -167,13 +165,12 @@ var INLINE_STYLES = [
     { label: 'Bold', style: 'BOLD' },
     { label: 'Italic', style: 'ITALIC' },
     { label: 'Underline', style: 'UNDERLINE' },
-    { label: 'Monospace', style: 'CODE' }
 ];
 
 const InlineStyleControls = props => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
-        <div className="RichEditor-controls">
+        <span className="RichEditor-controls">
             {INLINE_STYLES.map(type => (
                 <StyleButton
                     key={type.label}
@@ -183,7 +180,7 @@ const InlineStyleControls = props => {
                     style={type.style}
                 />
             ))}
-        </div>
+        </span>
     );
 };
 

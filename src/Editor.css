@@ -6,8 +6,6 @@
     padding: 15px;
 
     padding-bottom: 35px;
-
-    margin: 20px;
 }
 
 .RichEditor-editor {
@@ -17,14 +15,10 @@
     margin-top: 10px;
 }
 
-.RichEditor-editor .public-DraftEditorPlaceholder-root,
-.RichEditor-editor .public-DraftEditor-content {
-    margin: 0 -15px -15px;
-    padding: 15px;
-}
-
 .RichEditor-editor .public-DraftEditor-content {
     min-height: 100px;
+    padding: 8px;    
+    margin-top: 15px;
 }
 
 .RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
@@ -67,12 +61,10 @@
     color: #5890ff;
 }
 
-.RichEditor-filter {
+.RichEditor-button {
     float: right;
-    margin-top: 7px;
-    width: 90px;
-    border: 1px solid grey;
-    border-radius: 2px;
-    background: grey;
-    color: white;
+}
+
+.public-DraftEditor-content {
+    background-color: #f8f8f8;
 }

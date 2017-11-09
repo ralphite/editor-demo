@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import CollabEditor from './Editor';
+import CollabEditor, { MyEditor } from './Editor';
 
 class App extends Component {
   render() {
@@ -12,7 +12,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Demo with React + Draft.js</h1>
         </header>
-        <CollabEditor/>
+        <div className="container">
+          <CollabEditor />
+        </div>  
       </div>
     );
   }

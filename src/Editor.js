@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
+import 'draft-js/dist/Draft.css';   
 import './Editor.css';
 
 class CollabEditor extends Component {
@@ -16,6 +17,8 @@ class CollabEditor extends Component {
         this.onTab = e => this._onTab(e);
         this.toggleBlockType = type => this._toggleBlockType(type);
         this.toggleInlineStyle = style => this._toggleInlineStyle(style);
+
+        this.logState = () => console.log(this.state.editorState.toJS());        
     }
 
     _handleKeyCommand(command) {
@@ -46,7 +49,7 @@ class CollabEditor extends Component {
 
         // If the user changes block type before entering any text, we can
         // either style the placeholder or hide it. Let's just hide it now.
-        let className = 'RichEditor-editor';
+        let className = 'RichEditor-editor mb-3 ';
         var contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
             if (
@@ -60,10 +63,12 @@ class CollabEditor extends Component {
         }
 
         return (
-            <div className="RichEditor-root">
+            <div className="RichEditor-root my-5">
                 <div>
-                    <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} />
-                    <InlineStyleControls editorState={editorState} onToggle={this.toggleInlineStyle} />
+                    <div className="mb-3">
+                        <BlockStyleControls editorState={editorState} onToggle={this.toggleBlockType} />
+                        <InlineStyleControls editorState={editorState} onToggle={this.toggleInlineStyle} />
+                    </div>    
                     <div className={className} onClick={this.focus}>
                         <Editor
                             blockStyleFn={getBlockStyle}
@@ -78,9 +83,12 @@ class CollabEditor extends Component {
                     </div>
                 </div>
 
-                <div>                
-                    <button className="RichEditor-filter" style={{ cursor: 'pointer' }}>
-                        <span className="fa fa-filter"/> Insert Filter
+                <div className="mb-2">
+                    <button className="RichEditor-button btn btn-sm btn-primary ml-3" style={{ cursor: 'pointer' }}>
+                        <span className="fa fa-filter" /> Insert Filter
+                    </button>
+                    <button className="RichEditor-button log-state btn btn-sm btn-info" style={{ cursor: 'pointer' }} onClick={this.logState}>
+                        Log State to Console
                     </button>
                 </div>
             </div>
@@ -164,7 +172,7 @@ const BlockStyleControls = props => {
 var INLINE_STYLES = [
     { label: 'Bold', style: 'BOLD' },
     { label: 'Italic', style: 'ITALIC' },
-    { label: 'Underline', style: 'UNDERLINE' },
+    { label: 'Underline', style: 'UNDERLINE' }
 ];
 
 const InlineStyleControls = props => {

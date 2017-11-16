@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './Editor.css';
 
@@ -19,6 +19,11 @@ class CollabEditor extends Component {
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
 
     this.logState = () => console.log(this.state.editorState.toJS());
+
+    this.getCurrentContent = () => {
+      const content = this.state.editorState.getCurrentContent();
+      console.log(convertToRaw(content));
+    };
   }
 
   _handleKeyCommand(command) {
@@ -85,16 +90,25 @@ class CollabEditor extends Component {
 
         <div className="row mb-2">
           <div className="col-12">
-            <button className="RichEditor-button btn btn-sm btn-primary ml-3" style={{ cursor: 'pointer' }}>
-              <span className="fa fa-filter" /> Insert Filter
-            </button>
-            <button
-              className="RichEditor-button log-state btn btn-sm btn-info"
-              style={{ cursor: 'pointer' }}
-              onClick={this.logState}
-            >
-              Log State to Console
-            </button>
+            <div className="float-right p-1">
+              <button
+                className="RichEditor-button log-state btn btn-sm btn-info"
+                style={{ cursor: 'pointer' }}
+                onClick={this.getCurrentContent}
+              >
+                Log Raw Content
+              </button>
+              <button
+                className="RichEditor-button log-state btn btn-sm btn-info ml-3"
+                style={{ cursor: 'pointer' }}
+                onClick={this.logState}
+              >
+                Log Editor State
+              </button>
+              <button className="RichEditor-button btn btn-sm btn-primary ml-3" style={{ cursor: 'pointer' }}>
+                <span className="fa fa-filter" /> Insert Filter
+              </button>
+            </div>
           </div>
         </div>
       </div>

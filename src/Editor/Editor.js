@@ -1,16 +1,29 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { EditorState, RichUtils, convertToRaw } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+
+import createEmojiPlugin from 'draft-js-emoji-plugin';
+import createMentionPlugin, { defaultSuggestionsFilter } from './draft-js-plugins/draft-js-mention-plugin/src/index';
+import mentions from './mentions';
+
 import 'draft-js/dist/Draft.css';
+import 'draft-js-emoji-plugin/lib/plugin.css';
 import './Editor.css';
+
+const mentionPlugin = createMentionPlugin();
+const { MentionSuggestions } = mentionPlugin;
+const emojiPlugin = createEmojiPlugin();
+const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      suggestions: mentions
     };
 
-    this.focus = () => this.refs.editor.focus();
+    this.focus = () => this.editor.focus();
     this.onChange = editorState => this.setState({ editorState });
 
     this.handleKeyCommand = command => this._handleKeyCommand(command);
@@ -49,6 +62,17 @@ class CollabEditor extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
   }
 
+
+  onSearchChange = ({ value }) => {
+    this.setState({
+      suggestions: defaultSuggestionsFilter(value, mentions),
+    });
+  };
+
+  onAddMention = () => {
+    // get the mention object selected
+  }
+
   render() {
     const { editorState } = this.state;
 
@@ -82,9 +106,18 @@ class CollabEditor extends Component {
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               onTab={this.onTab}
-              ref="editor"
+              ref={(element) => { this.editor = element; }}              
               spellCheck={true}
+              plugins={[mentionPlugin, emojiPlugin]}
             />
+            <div className="MentionSuggestions">
+            <MentionSuggestions
+              onSearchChange={this.onSearchChange}
+              suggestions={this.state.suggestions}
+              onAddMention={this.onAddMention}
+              />
+            </div>  
+            <EmojiSuggestions />
           </div>
         </div>
 

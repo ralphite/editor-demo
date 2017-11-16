@@ -65,3 +65,21 @@
 .public-DraftEditor-content {
     background-color: #f8f8f8;
 }
+
+.MentionSuggestions > div > div {
+    padding: 2px;
+}
+.MentionSuggestions > div > div:hover {
+    background-color: #eee;
+    cursor: pointer;
+}    
+
+.MentionSuggestions img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.mention-image {
+    width: 20px;
+    margin-right: 5px;
+}

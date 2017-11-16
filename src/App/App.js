@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import CollabEditor, { MyEditor } from './Editor';
+import CollabEditor, { MyEditor } from '../Editor/Editor';
 
 class App extends Component {
   render() {

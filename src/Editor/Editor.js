@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { EditorState, RichUtils, convertToRaw } from 'draft-js';
+import { EditorState, RichUtils, convertToRaw, Modifier, Entity } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createMentionPlugin, { defaultSuggestionsFilter } from './draft-js-plugins/draft-js-mention-plugin/src/index';
 import mentions from './mentions';
+
+import { filterDef, filterDecorator } from './Filter';
 
 import 'draft-js/dist/Draft.css';
 import 'draft-js-emoji-plugin/lib/plugin.css';
@@ -19,7 +21,7 @@ class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState: EditorState.createEmpty(filterDecorator),
       suggestions: mentions
     };
 
@@ -32,6 +34,7 @@ class CollabEditor extends Component {
     this.toggleInlineStyle = style => this._toggleInlineStyle(style);
 
     this.logState = () => console.log(this.state.editorState.toJS());
+    this.insertFilter = this._insertFilter.bind(this);
 
     this.getCurrentContent = () => {
       const content = this.state.editorState.getCurrentContent();
@@ -62,16 +65,58 @@ class CollabEditor extends Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle));
   }
 
+  _insertFilter(e) {
+    e.preventDefault();
+    const editorState = this.state.editorState;
+    const currentContent = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const entityKey = Entity.create('FILTER', 'MUTABLE', { filterData: filterDef });
+    const textWithEntity = Modifier.insertText(currentContent, selection, ' filter', null, entityKey);
+    const contentStateEndWithSpace = Modifier.insertText(textWithEntity, selection, ' ')
+
+    // EditorState.push(editorState, textWithEntity, 'insert-filter');
+    
+
+    this.setState(
+      {
+        editorState: EditorState.push(editorState, contentStateEndWithSpace, 'insert-filter')
+      },
+      () => {
+        this.focus();
+      }
+    );
+
+    // const { editorState } = this.state;
+    // const contentState = editorState.getCurrentContent();    
+    // const newContentState = Modifier.insertText(contentState, editorState.getSelection(), 'filter');
+    
+
+    // const newContentStateWithEntity = newContentState.createEntity('FILTER', 'MUTABLE', { filterData: filterDef });
+    // const entityKey = newContentStateWithEntity.getLastCreatedEntityKey();
+
+    // const newEditorState = EditorState.set(editorState, { currentContent: newContentStateWithEntity });
+    
+    // this.setState(
+    //   {
+    //     editorState: EditorState.set(newEditorState, { currentContent: newContentStateWithEntity }),
+    //   },
+    //   () => {
+    //     setTimeout(() => this.editor.focus(), 0);
+    //   }
+    // );
+
+    // console.log('Inserted filter', filterDef);
+  }
 
   onSearchChange = ({ value }) => {
     this.setState({
-      suggestions: defaultSuggestionsFilter(value, mentions),
+      suggestions: defaultSuggestionsFilter(value, mentions)
     });
   };
 
   onAddMention = () => {
     // get the mention object selected
-  }
+  };
 
   render() {
     const { editorState } = this.state;
@@ -106,17 +151,19 @@ class CollabEditor extends Component {
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               onTab={this.onTab}
-              ref={(element) => { this.editor = element; }}              
+              ref={element => {
+                this.editor = element;
+              }}
               spellCheck={true}
               plugins={[mentionPlugin, emojiPlugin]}
             />
             <div className="MentionSuggestions">
-            <MentionSuggestions
-              onSearchChange={this.onSearchChange}
-              suggestions={this.state.suggestions}
-              onAddMention={this.onAddMention}
+              <MentionSuggestions
+                onSearchChange={this.onSearchChange}
+                suggestions={this.state.suggestions}
+                onAddMention={this.onAddMention}
               />
-            </div>  
+            </div>
             <EmojiSuggestions />
           </div>
         </div>
@@ -138,7 +185,11 @@ class CollabEditor extends Component {
               >
                 Log Editor State
               </button>
-              <button className="RichEditor-button btn btn-sm btn-primary ml-3" style={{ cursor: 'pointer' }}>
+              <button
+                className="RichEditor-button btn btn-sm btn-primary ml-3"
+                style={{ cursor: 'pointer' }}
+                onClick={this.insertFilter}
+              >
                 <span className="fa fa-filter" /> Insert Filter
               </button>
             </div>

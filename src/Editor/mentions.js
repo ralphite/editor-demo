@@ -7,7 +7,7 @@ const mentions = [
   {
     name: 'Ellen W',
     link: 'https://twitter.com/juliandoesstuff',
-    avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
+    avatar: 'https://media.licdn.com/media/p/8/005/0a4/2c0/0408427.jpg',
   },
   {
     name: 'D',
@@ -17,7 +17,7 @@ const mentions = [
   {
     name: 'Ralph',
     link: 'https://twitter.com/nikgraf',
-    avatar: 'https://avatars0.githubusercontent.com/u/223045?v=3&s=400',
+    avatar: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/3/000/07b/1cb/1bf9c96.jpg',
   },
   {
     name: 'Xiaolong',

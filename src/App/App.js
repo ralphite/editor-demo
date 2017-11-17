@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import CollabEditor, { MyEditor } from '../Editor/Editor';
+import Editor2 from '../Editor/Editor2';
 
 class App extends Component {
   render() {
@@ -14,6 +15,10 @@ class App extends Component {
         </header>
         <div className="container">
           <CollabEditor />
+        </div>  
+
+        <div className="container">
+          <Editor2 />
         </div>  
       </div>
     );

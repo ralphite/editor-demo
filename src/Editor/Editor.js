@@ -170,27 +170,20 @@ class CollabEditor extends Component {
 
         <div className="row mb-2">
           <div className="col-12">
-            <div className="float-right p-1">
+            <div className="p-1">
               <button
-                className="RichEditor-button log-state btn btn-sm btn-info"
+                className="RichEditor-button log-state btn btn-sm btn-info ml-3 mb-3 float-right"
                 style={{ cursor: 'pointer' }}
                 onClick={this.getCurrentContent}
               >
                 Log Raw Content
               </button>
               <button
-                className="RichEditor-button log-state btn btn-sm btn-info ml-3"
+                className="RichEditor-button log-state btn btn-sm btn-info ml-3 mb-3 float-right"
                 style={{ cursor: 'pointer' }}
                 onClick={this.logState}
               >
                 Log Editor State
-              </button>
-              <button
-                className="RichEditor-button btn btn-sm btn-primary ml-3"
-                style={{ cursor: 'pointer' }}
-                onClick={this.insertFilter}
-              >
-                <span className="fa fa-filter" /> Insert Filter
               </button>
             </div>
           </div>

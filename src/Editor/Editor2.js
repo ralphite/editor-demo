@@ -23,7 +23,7 @@ const Placeholder = props => {
     ...passedInProps,
   } = props;
   return <span {...passedInProps} style={styles.placeholder}>
-    <span className="fa fa-filter"/>
+    {/* <span className="fa fa-filter"/> */}
     {props.children}
   </span>;
 };
@@ -130,6 +130,7 @@ class Editor2 extends React.Component {
 
   focus() {
     this.refs.editor.focus();
+
   }
 
   componentDidUpdate() { 
@@ -143,7 +144,7 @@ class Editor2 extends React.Component {
         <div style={styles.editor} onClick={this.focus}>
           <Editor editorState={this.state.editorState} ref="editor" onChange={this.onChange} />
         </div>
-        <button type="button" className="btn btn-sm btn-primary float-right py-1 my-3 ml-3" onClick={this.insertPlaceholder.bind(null, 'filter', { filterDef: {d: 'whatever'}})}>
+        <button type="button" className="btn btn-sm btn-primary float-right py-1 my-3 ml-3" onClick={this.insertPlaceholder.bind(null, '♫filter' /*♫*/, { filterDef: {d: 'whatever'}})}>
           Insert Filter
         </button>
         <button type="button" className="btn btn-sm btn-info float-right py-1 my-3 ml-3" onClick={this.logState}>
